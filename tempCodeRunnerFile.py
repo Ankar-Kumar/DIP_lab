@@ -1,0 +1,1 @@
+(cdf.max()-cdf.min())
