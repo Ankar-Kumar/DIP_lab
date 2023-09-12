@@ -24,7 +24,7 @@ for i in range(height):
     for j in range(width):
         power_img[i,j]=c*(final_img[i,j]**gama)
         # tmp_img[i,j]=c*np.log(1.0+final_img[i,j])
-        inv_log[i,j]=math.exp(final_img[i,j]**1/c)-1
+        inv_log[i,j]=np.exp(final_img[i,j]**1/c)-1
 
 # power_img=np.array(power_img,dtype=np.uint8)
 plt.imshow(final_img,cmap='gray')

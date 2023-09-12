@@ -1,1 +1,2 @@
-(cdf.max()-cdf.min())
+,1,2)
+# plt.imshow(no
