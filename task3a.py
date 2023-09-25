@@ -23,13 +23,25 @@ plt.subplot(2,2,1)
 plt.imshow(image,cmap='gray')
 plt.subplot(2,2,2)
 plt.imshow(noise_image,cmap='gray')
-def masking(noise_image,height,width):
-    n=3 
+def padding_add(n,noise_image):
     mask = np.ones((n,n), dtype=np.float32) / (n*n*1.0)
     pad_height=n//2
     pad_width=n//2
-    spatial_image=np.zeros((height,width),dtype=np.uint8)
-    pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
+    new_height=height+2*pad_height
+    new_width=width+2*pad_width 
+    pad_image=np.zeros((new_height,new_width),dtype=np.uint8)
+    pad_image[pad_height:pad_height + height, pad_width:pad_width + width] = noise_image
+
+    return pad_image,mask
+def Average(noise_image,height,width):
+    
+    spatial_image=np.zeros((height,width),dtype=np.uint8)  
+    n=3
+
+    pad_image,mask=padding_add(n,noise_image)
+
+
+    # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
 
     for h in range(height):
         for w in range(width):
@@ -39,13 +51,11 @@ def masking(noise_image,height,width):
 
     return spatial_image
 
-def masking2(noise_image,height,width):
+def Median(noise_image,height,width):
     n=3
-    mask = np.ones((n,n))
-    pad_height=n//2
-    pad_width=n//2
     spatial_image=np.zeros_like(noise_image)
-    pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
+    pad_image,mask=padding_add(n,noise_image)
+    # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
 
     for h in range(height):
         for w in range(width):
@@ -62,8 +72,8 @@ def PSNR(original,noisy):
    return psnr
 
 
-spatial_image=masking(noise_image,height,width)
-spatial_image2=masking2(noise_image,height,width)
+spatial_image=Average(noise_image,height,width)
+spatial_image2=Median(noise_image,height,width)
 med_original=PSNR(image,spatial_image2)
 plt.subplot(2,2,3)
 plt.imshow(spatial_image,cmap='gray')

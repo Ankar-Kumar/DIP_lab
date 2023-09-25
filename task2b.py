@@ -22,17 +22,18 @@ inv_log=np.zeros((height,width),dtype=np.uint8)
 
 for i in range(height):
     for j in range(width):
-        power_img[i,j]=c*(final_img[i,j]**gama)
+        power_img[i,j]=(final_img[i,j]**gama)
         # tmp_img[i,j]=c*np.log(1.0+final_img[i,j])
-        inv_log[i,j]=np.exp(final_img[i,j]**1/c)-1
+        inv_log[i,j]=np.exp(final_img[i,j] / c) -1
+# inv_log=np.exp(final_img / c) -1
 
-# power_img=np.array(power_img,dtype=np.uint8)
+plt.subplot(1,3,1)
 plt.imshow(final_img,cmap='gray')
 plt.title('original image')
-plt.figure(3)
+plt.subplot(1,3,2)
 plt.imshow(inv_log,cmap='gray') 
 plt.title('inverse log image')
-plt.figure(2)    
+plt.subplot(1,3,3) 
 plt.imshow(power_img,cmap='gray')
 plt.title('power image ')
 plt.show()
