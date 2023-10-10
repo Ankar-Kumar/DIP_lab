@@ -33,7 +33,8 @@ def gaussian(F):
 
     Gaussian_constant=Gaussian*F
     filter_image=np.abs(np.fft.ifft2(Gaussian_constant))
-    filtered_image = cv2.normalize(filter_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    # filtered_image = cv2.normalize(filter_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    filtered_image=filter_image/255
     return filtered_image
 
 

@@ -38,6 +38,8 @@ def harmonic_geometric_mean(noise_image,height,width):
         for w in range(width):
             tmp_window=pad_image[h:h+n,w:w+n]
             harmonic_weight=n*n/np.sum(1.0 / (tmp_window + 1e-3)) #harmonic weight
+
+            # for geometric mean filter
             geometric_weight = 0
             count_non_zero = 0
             for i in range(n):
@@ -49,6 +51,7 @@ def harmonic_geometric_mean(noise_image,height,width):
                 geometric_weight=np.exp(geometric_weight / count_non_zero)
             else:
                 geometric_weight=0
+
             # geometric_weight= np.prod(tmp_window) ** (1 /n*n)
             harmonic[h,w]=harmonic_weight
             geometric[h,w]=geometric_weight
