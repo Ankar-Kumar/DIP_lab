@@ -1,26 +1,72 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import cv2
+import random
 
-def pad_image(image, pad_height, pad_width):
-    
-    # Get the dimensions of the input image
-    height, width = image.shape
 
-    # Calculate the new dimensions after padding
-    new_height = height + 2 * pad_height
-    new_width = width + 2 * pad_width
+def harmonic_filter(image, x, y, a, b, totalPixels):
+   result = 0
+   for i in range(-a, a):
+       for j in range (-b, b):
+           if image[x+i, y+j]>0:
+               result += 1/image[x+i, y+j]
 
-    # Create a new array filled with zeros (padded_image)
-    padded_image = np.zeros((new_height, new_width), dtype=image.dtype)
 
-    # Copy the input image into the center of the padded_image
-    padded_image[pad_height:pad_height + height, pad_width:pad_width + width] = image
+   return totalPixels/result
 
-    return padded_image
 
-# Example usage:
-# pad_height and pad_width specify the amount of padding on each side
-image = np.array([[1, 2], [3, 4]])
-pad_height = 2
-pad_width = 2
-padded_image = pad_image(image, pad_height, pad_width)
-print(padded_image)
+def geometric_mean(image, x, y, a, b, totalPixels):
+   result = np.float64(1)
+   validPixel = 0
+   for i in range(-a, a):
+       for j in range(-b, b):
+           if image[x+i, y+j]>0:
+               validPixel += 1
+               result *= image[x+i, y+j]
+   # print(result ** (1/totalPixels))
+   if (validPixel>0):
+       return result ** (1/totalPixels)
+   else:
+       return result
+
+
+
+
+
+original_image= cv2.imread('imgg/cameraman.jpg', cv2.IMREAD_GRAYSCALE)
+dup_img = original_image.copy()
+noise = 0.02
+row, col = dup_img.shape
+for i in range(row):
+   for j in range(col):
+       rand = random.random()
+       if rand < noise/2:
+           dup_img[i, j] = 0
+       elif rand < noise:
+           dup_img[i, j] = 255
+
+
+harmonic_mean_filter_image = dup_img.copy()
+geometric_mean_filter_image = dup_img.copy()
+row, col = dup_img.shape
+
+
+for i in range (2, row-2):
+   for j in range (2, col-2):
+       harmonic_mean_filter_image[i, j] = harmonic_filter(dup_img, i, j, 2, 2, 25)
+   
+for i in range (1, row-1):
+   for j in range (1, col-1):
+       geometric_mean_filter_image[i, j] = geometric_mean(dup_img, i, j, 1, 1, 9)
+
+plt.subplot(221)
+plt.imshow(original_image, cmap='gray')
+plt.title('original image')
+plt.subplot(222)
+plt.imshow(dup_img, cmap='gray')
+plt.title('Noisy Image')
+
+plt.subplot(223)
+plt.imshow(geometric_mean_filter_image,cmap='gray')
+plt.title('geometric_mean_filter_image ')
+plt.show()
