@@ -24,6 +24,7 @@ plt.imshow(image,cmap='gray')
 plt.subplot(2,2,2)
 plt.imshow(noise_image,cmap='gray')
 def padding_add(n,noise_image):
+    
     mask = np.ones((n,n), dtype=np.float32) / (n*n*1.0)
     pad_height=n//2
     pad_width=n//2
@@ -33,20 +34,16 @@ def padding_add(n,noise_image):
     pad_image[pad_height:pad_height + height, pad_width:pad_width + width] = noise_image
 
     return pad_image,mask
-def Average(noise_image,height,width):
-    
+def Average(noise_image,height,width):    
     spatial_image=np.zeros((height,width),dtype=np.uint8)  
     n=3
-
     pad_image,mask=padding_add(n,noise_image)
-
-
     # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
 
     for h in range(height):
         for w in range(width):
-            roi=pad_image[h:h+n,w:w+n]
-            weight=np.sum(roi*mask)
+            tmp_window=pad_image[h:h+n,w:w+n]
+            weight=np.sum(tmp_window*mask)
             spatial_image[h,w]=weight
 
     return spatial_image
@@ -59,8 +56,8 @@ def Median(noise_image,height,width):
 
     for h in range(height):
         for w in range(width):
-            roi=pad_image[h:h+n,w:w+n]
-            weight=np.median(roi*mask)
+            tmp_window=pad_image[h:h+n,w:w+n]
+            weight=np.median(tmp_window*mask)
             spatial_image[h,w]=weight
 
     return spatial_image

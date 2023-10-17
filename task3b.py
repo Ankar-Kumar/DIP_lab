@@ -27,8 +27,8 @@ def padding_add(n,noise_image):
     mask = np.ones((n,n), dtype=np.float32) / (n*n*1.0)
     pad_height=n//2
     pad_width=n//2
-    new_height=height+2*pad_height
-    new_width=width+2*pad_width 
+    new_height=height+2*pad_height # 0 value added left and right
+    new_width=width+2*pad_width  # 0 value added top and bottom
     pad_image=np.zeros((new_height,new_width),dtype=np.uint8)
     pad_image[pad_height:pad_height + height, pad_width:pad_width + width] = noise_image
 
@@ -46,8 +46,8 @@ def masking2(noise_image,height,width,n):
 
     for h in range(height):
         for w in range(width):
-            roi=pad_image[h:h+n,w:w+n]
-            weight=np.sum(roi*mask)
+            tmp_window=pad_image[h:h+n,w:w+n]
+            weight=np.sum(tmp_window*mask)
             spatial_image[h,w]=weight
 
     return spatial_image

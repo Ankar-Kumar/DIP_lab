@@ -16,8 +16,11 @@ fimg = np.fft.fftshift(np.fft.fft2(img))
 fimg1 = np.fft.fftshift(np.fft.fft2(ori_img))
 
 (row, column) = img.shape
-u, v = np.meshgrid(np.arange(-(row // 2), row // 2), np.arange(-(column // 2), column// 2))
-D = np.sqrt(u**2 + v**2)
+D=np.zeros((row,column))
+for u in range(row):
+        for v in range(column):            
+            D[u,v]=np.sqrt( (u - row/2)**2 + (v - column/2)**2)
+            
 
 # Gaussian High-Pass Filter
 ghf = 1 - np.exp(-((D**2) / (2 * D0**2)))

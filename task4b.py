@@ -18,22 +18,18 @@ fimg = np.fft.fftshift(np.fft.fft2(noisy_image))
 D0 = 5  # Cutoff frequency
 n =15   # Filter order
 dim= int(np.ceil(np.sqrt(n)))
-M,N=fimg.shape
 
 
-# D=[]
-# for u in range(M):
-#         tmp2=[]
-#         for v in range(N):
-#             tmp = np.sqrt((u - M/2)**2 + (v - N/2)**2)
-#             tmp2.append(tmp)
-#         D.append(tmp2)
-    
-u, v = np.meshgrid(np.arange(-(M // 2), M // 2), np.arange(-(N // 2), N // 2))
-D = np.sqrt(u**2 + v**2)
+  
+(row, column) = fimg.shape
+D=np.zeros((row,column))
+for u in range(row):
+        for v in range(column):            
+            D[u,v]=np.sqrt( (u - row/2)**2 + (v - column/2)**2)
+
 
 for i in range(n):
-    idlf=D<=D0
+    idlf= D<=D0
     foutput_img = fimg* idlf
     # tmp_img = np.fft.ifft2(np.fft.ifftshift(foutput_img))
     # idlf_img = np.abs(tmp_img)

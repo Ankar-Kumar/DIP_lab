@@ -2,13 +2,13 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import math
-image= cv2.imread('images.jpg', cv2.IMREAD_GRAYSCALE)
+image= cv2.imread('imgg/images.jpg', cv2.IMREAD_GRAYSCALE)
 final_img=cv2.resize(image,(512,512))
 
 height,width=final_img.shape
 
 msb_mask =224 
-gray_image_msb = cv2.bitwise_and(final_img, msb_mask)
+gray_image_msb =final_img & msb_mask
 
 # diff=cv2.absdiff(final_img,gray_image_msb)
 diff=np.zeros_like(final_img)

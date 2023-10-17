@@ -20,10 +20,10 @@ def histogram_equalization(image,histogram):
     cdf_normalized=((cdf-cdf.min())*255)/(512*512) 
     equalized_image=cdf_normalized[image]
 
-    return equalized_image.astype(np.uint8),cdf_normalized
+    return equalized_image.astype(np.uint8)
 
 histogram_origin=histogram_cal(image)
-eqalized_image,cdf=histogram_equalization(image,histogram_origin)
+eqalized_image=histogram_equalization(image,histogram_origin)
 equalized_hist=histogram_cal(eqalized_image)
 
 

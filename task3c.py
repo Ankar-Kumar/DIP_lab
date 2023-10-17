@@ -3,12 +3,11 @@ import cv2
 import matplotlib.pyplot as plt
 image= cv2.imread('imgg/cat.jpg', cv2.IMREAD_GRAYSCALE)
 image=cv2.resize(image,(512,512))
-height=512
-width=512
+height,width=image.shape
 def addNoise(image):
     noise_image=image.copy()
     noise=0.02
-    height,width=512,512
+    height,width=image.shape
 
     for h in range(height):
         for w in range(width):
@@ -37,7 +36,9 @@ def harmonic_geometric_mean(noise_image,height,width):
     for h in range(height):
         for w in range(width):
             tmp_window=pad_image[h:h+n,w:w+n]
+            
             harmonic_weight=n*n/np.sum(1.0 / (tmp_window + 1e-3)) #harmonic weight
+            harmonic[h,w]=harmonic_weight
 
             # for geometric mean filter
             geometric_weight = 0
@@ -53,7 +54,6 @@ def harmonic_geometric_mean(noise_image,height,width):
                 geometric_weight=0
 
             # geometric_weight= np.prod(tmp_window) ** (1 /n*n)
-            harmonic[h,w]=harmonic_weight
             geometric[h,w]=geometric_weight
 
     return harmonic,geometric

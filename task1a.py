@@ -2,7 +2,7 @@ import numpy as np
 import cv2  # OpenCV is used for visualization purposes
 import matplotlib.pyplot as plt
 import math
-image = cv2.imread('images.jpg',cv2.IMREAD_GRAYSCALE)
+
 def downsample(image, scale):
     h, w = image.shape
     h,w= h // scale, w // scale
@@ -13,6 +13,9 @@ def downsample(image, scale):
             resized_image[i, j] = image[i * scale, j * scale]
     
     return resized_image
+
+
+image = cv2.imread('imgg/a.png',cv2.IMREAD_GRAYSCALE)
 img=cv2.resize(image,(512,512))
 height,width=img.shape
 
