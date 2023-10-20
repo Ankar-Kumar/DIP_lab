@@ -24,18 +24,18 @@ plt.imshow(image,cmap='gray')
 plt.subplot(3,3,5)
 plt.imshow(noise_image,cmap='gray')
 def padding_add(n,noise_image):
-    mask = np.ones((n,n), dtype=np.float32) / (n*n*1.0)
+    mask = np.ones((n,n)) / (n*n*1.0)
     pad_height=n//2
     pad_width=n//2
     new_height=height+2*pad_height # 0 value added left and right
     new_width=width+2*pad_width  # 0 value added top and bottom
-    pad_image=np.zeros((new_height,new_width),dtype=np.uint8)
+    pad_image=np.zeros((new_height,new_width))
     pad_image[pad_height:pad_height + height, pad_width:pad_width + width] = noise_image
 
     return pad_image,mask
 
 def masking2(noise_image,height,width,n):
-    spatial_image=np.zeros((height,width),dtype=np.uint8)
+    spatial_image=np.zeros((height,width))
 
     pad_image,mask=padding_add(n,noise_image)
 
@@ -53,7 +53,7 @@ def masking2(noise_image,height,width,n):
     return spatial_image
 
 def PSNR(original,noisy):
-   mse = np.mean((original.astype(np.float32) - noisy.astype(np.float32)) ** 2)
+   mse = np.mean((original - noisy) ** 2)
    max_pixel_value = 255.0
    psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
    return psnr

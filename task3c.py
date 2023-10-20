@@ -61,7 +61,7 @@ def harmonic_geometric_mean(noise_image,height,width):
 
 
 def PSNR(original,noisy):
-   mse = np.mean((original.astype(np.float32) - noisy.astype(np.float32)) ** 2)
+   mse = np.mean((original - noisy) ** 2)
    max_pixel_value = 255.0
    psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
    return psnr

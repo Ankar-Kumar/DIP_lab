@@ -10,7 +10,7 @@ height, width = image.shape
 
 mean = 0
 stddev = 25
-noise = np.random.normal(mean, stddev, image.shape).astype(np.uint8)
+noise = np.random.normal(mean, stddev, image.shape)
 
 noisy_image = cv2.add(image, noise)
 
@@ -23,7 +23,7 @@ D0 = 10  # Cutoff frequency
 n = 10   # Filter order
 def gaussian(F):
     M, N = F.shape
-    Gaussian = np.zeros((M, N), dtype=np.float32)
+    Gaussian = np.zeros((M, N))
     for u in range(M):
         for v in range(N):
             
@@ -40,14 +40,14 @@ def gaussian(F):
 
 def butterworth(F):
     M, N = F.shape
-    H = np.zeros((M, N), dtype=np.float32)
+    H = np.zeros((M, N))
     for u in range(M):
         for v in range(N):
             D = np.sqrt((u - M/2)**2 + (v - N/2)**2)
             H[u, v] = 1 / (1 + (D / D0)**(2 * n))
     G = F * H
     filtered_image = np.abs(np.fft.ifft2(G))
-    filtered_image = cv2.normalize(filtered_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    filtered_image = cv2.normalize(filtered_image, None, 0, 255, cv2.NORM_MINMAX)
     return filtered_image
 
 

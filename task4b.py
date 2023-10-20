@@ -10,7 +10,7 @@ height, width = image.shape
 
 mean = 0
 stddev = 25
-noise = np.random.normal(mean, stddev, image.shape).astype(np.uint8)
+noise = np.random.normal(mean, stddev, image.shape)
 
 noisy_image = cv2.add(image, noise)
 fimg = np.fft.fftshift(np.fft.fft2(noisy_image))

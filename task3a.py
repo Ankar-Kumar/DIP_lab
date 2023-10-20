@@ -25,17 +25,17 @@ plt.subplot(2,2,2)
 plt.imshow(noise_image,cmap='gray')
 def padding_add(n,noise_image):
     
-    mask = np.ones((n,n), dtype=np.float32) / (n*n*1.0)
+    mask = np.ones((n,n)) / (n*n*1.0)
     pad_height=n//2
     pad_width=n//2
     new_height=height+2*pad_height
     new_width=width+2*pad_width 
-    pad_image=np.zeros((new_height,new_width),dtype=np.uint8)
+    pad_image=np.zeros((new_height,new_width))
     pad_image[pad_height:pad_height + height, pad_width:pad_width + width] = noise_image
 
     return pad_image,mask
 def Average(noise_image,height,width):    
-    spatial_image=np.zeros((height,width),dtype=np.uint8)  
+    spatial_image=np.zeros((height,width))  
     n=3
     pad_image,mask=padding_add(n,noise_image)
     # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
@@ -63,7 +63,7 @@ def Median(noise_image,height,width):
     return spatial_image
 
 def PSNR(original,noisy):
-   mse = np.mean((original.astype(np.float32) - noisy.astype(np.float32)) ** 2)
+   mse = np.mean((original - noisy) ** 2)
    max_pixel_value = 255.0
    psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
    return psnr

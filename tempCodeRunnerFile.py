@@ -1,1 +1,1 @@
-55/(np.log(1+255))
+np.copy(image)

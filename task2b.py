@@ -16,9 +16,9 @@ c=255/(np.log(1+255))
 
 # power=np.power(final_img/255.0,gama)*c
 # power_img=np.uint8(power)
-tmp_img=np.zeros((height,width),dtype=np.uint8)
-power_img=np.zeros((height,width),dtype=np.uint8)
-inv_log=np.zeros((height,width),dtype=np.uint8)
+tmp_img=np.zeros((height,width))
+power_img=np.zeros((height,width))
+inv_log=np.zeros((height,width))
 
 for i in range(height):
     for j in range(width):
