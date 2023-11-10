@@ -10,13 +10,15 @@ height, width = image.shape
 
 mean = 0
 stddev = 25
-noise = np.random.normal(mean, stddev, image.shape)
+noise = np.random.normal(0, 0.5, image.shape).astype(np.uint8)
 
 noisy_image = cv2.add(image, noise)
+
+# img = cv2.add(ori_img,np.random.normal(0, 0.5, ori_img.shape).astype(np.uint8))
 fimg = np.fft.fftshift(np.fft.fft2(noisy_image))
 
 D0 = 5  # Cutoff frequency
-n =15   # Filter order
+n =15   # how many
 dim= int(np.ceil(np.sqrt(n)))
 
 
