@@ -1,1 +1,1 @@
-np.copy(image)
+.astype(np.uint)

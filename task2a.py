@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-img=cv2.imread('imgg/images.jpg',cv2.IMREAD_GRAYSCALE)
+img=cv2.imread('imgg/images.jpg',0)
 image=cv2.resize(img,(512,512))
 
 height,width=image.shape

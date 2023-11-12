@@ -2,6 +2,16 @@ import numpy as np
 import cv2  # OpenCV is used for visualization purposes
 import matplotlib.pyplot as plt
 import math
+def upsampling(image,scale):
+    h,w=image.shape
+    h=h*scale
+    w=w*scale
+    resized_image=np.zeros((h,w))
+    for i in range(h):
+        for j in range(w):
+            resized_image[i,j]=image[i//scale, j//scale]
+    return resized_image
+
 
 def downsample(image, scale):
     h, w = image.shape
@@ -15,7 +25,7 @@ def downsample(image, scale):
     return resized_image
 
 
-image = cv2.imread('imgg/a.png',cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('imgg/a.png',0)
 img=cv2.resize(image,(512,512))
 height,width=img.shape
 

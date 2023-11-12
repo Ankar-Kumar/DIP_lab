@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 st_elemen=np.ones((3,3))
 
-image= cv2.imread('imgg/fingerprint.png', cv2.IMREAD_GRAYSCALE)
+image= cv2.imread('imgg/fingerprint.png',0)
 image=cv2.resize(image,(512,512))
 height,width=image.shape
 
@@ -34,7 +34,7 @@ plt.title('erosion image')
 plt.axis('off')
 plt.subplot(224)
 plt.imshow(dialation_img,cmap='gray')
-plt.title('dialation image')
+plt.title('dilation image')
 plt.axis('off')
 plt.tight_layout()
 plt.show()

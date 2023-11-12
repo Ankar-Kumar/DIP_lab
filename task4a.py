@@ -3,14 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the image
-img = cv2.imread('imgg/cameraman.jpg', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('imgg/ideal.png', 0)
 image = cv2.resize(img, (512, 512))
 
 height, width = image.shape
 
 mean = 0
 stddev = 25
-noise = np.random.normal(mean, stddev, image.shape)
+
+noise = np.random.normal(mean, stddev, image.shape).astype(np.uint8)
 
 noisy_image = cv2.add(image, noise)
 
@@ -19,8 +20,8 @@ F = np.fft.fftshift(np.fft.fft2(noisy_image))
 
 # Define the Butterworth filter
 
-D0 = 10  # Cutoff frequency
-n = 10   # Filter order
+D0 = 25  # Cutoff frequency
+n = 2  # Filter order
 def gaussian(F):
     M, N = F.shape
     Gaussian = np.zeros((M, N))

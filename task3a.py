@@ -1,18 +1,19 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-image= cv2.imread('imgg/cameraman.jpg', cv2.IMREAD_GRAYSCALE)
+image= cv2.imread('imgg/cameraman.jpg', 0)
 image=cv2.resize(image,(512,512))
 height=512
 width=512
+
 def addNoise(image):
-    noise_image=image.copy()
+    noise_image=np.copy(image)
     noise=0.02
-    height,width=512,512
+    height,width=image.shape
 
     for h in range(height):
         for w in range(width):
-            random_val=np.random.rand()
+            random_val=np.random.rand() # returns random value between 0 and 1
             if random_val<noise/2:
                 noise_image[h,w]=0
             elif random_val<noise:
@@ -25,7 +26,7 @@ plt.subplot(2,2,2)
 plt.imshow(noise_image,cmap='gray')
 def padding_add(n,noise_image):
     
-    mask = np.ones((n,n)) / (n*n*1.0)
+    mask = np.ones((n,n)) / (n*n)
     pad_height=n//2
     pad_width=n//2
     new_height=height+2*pad_height
@@ -64,7 +65,7 @@ def Median(noise_image,height,width):
 
 def PSNR(original,noisy):
    mse = np.mean((original - noisy) ** 2)
-   max_pixel_value = 255.0
+   max_pixel_value = 255
    psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
    return psnr
 
@@ -76,7 +77,7 @@ plt.subplot(2,2,3)
 plt.imshow(spatial_image,cmap='gray')
 plt.subplot(2,2,4)
 plt.imshow(spatial_image2,cmap='gray')
-plt.title(f'Noisy image - PSNR: {med_original:.2f} dB')
+plt.title(f'Noisy image - PSNR: {med_original :.2f} dB')
 plt.tight_layout()
 plt.show()
 

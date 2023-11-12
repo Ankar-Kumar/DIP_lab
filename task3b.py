@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-image= cv2.imread('imgg/cameraman.jpg', cv2.IMREAD_GRAYSCALE)
+image= cv2.imread('imgg/cameraman.jpg', 0)
 image=cv2.resize(image,(512,512))
 height=512
 width=512

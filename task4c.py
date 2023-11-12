@@ -3,13 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the original image
-original_image = cv2.imread('imgg/cameraman.jpg', cv2.IMREAD_GRAYSCALE)
+original_image = cv2.imread('imgg/sobel.png', 0)
 ori_img = cv2.resize(original_image, (512, 512))
 
 # Add Gaussian noise to the image
-img = cv2.add(ori_img,np.random.normal(0, 0.5, ori_img.shape).astype(np.uint8))
+img = cv2.add(ori_img,np.random.normal(0, 25, ori_img.shape).astype(np.uint8))
 
-D0 = 10
+D0 = 15
 
 # Calculate the frequency domain representation
 fimg = np.fft.fftshift(np.fft.fft2(img))
