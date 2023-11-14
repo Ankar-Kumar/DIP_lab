@@ -16,14 +16,14 @@ fimg = np.fft.fftshift(np.fft.fft2(img))
 fimg1 = np.fft.fftshift(np.fft.fft2(ori_img))
 
 (row, column) = img.shape
-D=np.zeros((row,column))
+
 for u in range(row):
         for v in range(column):            
-            D[u,v]=np.sqrt( (u - row/2)**2 + (v - column/2)**2)
-            
+            D=np.sqrt( (u - row/2)**2 + (v - column/2)**2)
+            # Gaussian High-Pass Filter
+            ghf = 1 - np.exp(-((D**2) / (2 * D0**2)))
 
-# Gaussian High-Pass Filter
-ghf = 1 - np.exp(-((D**2) / (2 * D0**2)))
+
 foutput_img = fimg * ghf
 tmp_img = np.abs(np.fft.ifft2(foutput_img))
 gaussian_hf_img =tmp_img/255

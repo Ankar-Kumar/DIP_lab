@@ -5,6 +5,14 @@ image= cv2.imread('imgg/cameraman.jpg', 0)
 image=cv2.resize(image,(512,512))
 height=512
 width=512
+def PSNR(original,noisy):
+   original=original.astype(np.float64)
+   noisy=noisy.astype(np.float64)
+   mse = np.mean((original - noisy) ** 2)
+   max_pixel_value = 255.0
+   psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
+   return psnr
+
 def addNoise(image):
     noise_image=image.copy()
     noise=0.02
@@ -19,10 +27,15 @@ def addNoise(image):
                 noise_image[h,w]=255
     return noise_image
 noise_image=addNoise(image)
+
+psnr_val=PSNR(image,noise_image)
 plt.subplot(3,3,4)
 plt.imshow(image,cmap='gray')
+
+plt.title('original image')
 plt.subplot(3,3,5)
 plt.imshow(noise_image,cmap='gray')
+plt.title(f'psnr : {psnr_val:.2f}db')
 def padding_add(n,noise_image):
     mask = np.ones((n,n)) / (n*n*1.0)
     pad_height=n//2
@@ -52,13 +65,9 @@ def masking2(noise_image,height,width,n):
 
     return spatial_image
 
-def PSNR(original,noisy):
-   mse = np.mean((original - noisy) ** 2)
-   max_pixel_value = 255.0
-   psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
-   return psnr
+
 c=0
-for i in range(1,4):
+for i in range(1,4):# i< 4
     n=(i+1)*2-1
     spatial_image=masking2(noise_image,height,width,n)
     med_original=PSNR(image,spatial_image)

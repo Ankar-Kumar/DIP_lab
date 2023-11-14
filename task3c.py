@@ -13,17 +13,13 @@ def addNoise(image):
         for w in range(width):
             random_val=np.random.rand()
             if random_val<noise/2:
+                noise_image[h,w]=1
+            if random_val<noise:
                 noise_image[h,w]=0
-            elif random_val<noise:
-                noise_image[h,w]=255
     return noise_image
 
 
-noise_image=addNoise(image)
-plt.subplot(2,2,1)
-plt.imshow(image,cmap='gray')
-plt.subplot(2,2,2)
-plt.imshow(noise_image,cmap='gray')
+
 
 def harmonic_geometric_mean(noise_image,height,width):
     n=3 
@@ -36,11 +32,11 @@ def harmonic_geometric_mean(noise_image,height,width):
     for h in range(height):
         for w in range(width):
             tmp_window=pad_image[h:h+n,w:w+n]
-            
+            # harmonic works well for salt noise
             harmonic_weight=n*n/np.sum(1.0 / (tmp_window + 1e-3)) #harmonic weight
             harmonic[h,w]=harmonic_weight
 
-            # for geometric mean filter
+            # for geometric mean filter 
             geometric_weight = 0
             count_non_zero = 0
             for i in range(n):
@@ -61,12 +57,24 @@ def harmonic_geometric_mean(noise_image,height,width):
 
 
 def PSNR(original,noisy):
+   original=original.astype(np.float64)
+   noisy=noisy.astype(np.float64)
    mse = np.mean((original - noisy) ** 2)
    max_pixel_value = 255.0
    psnr = 20 * np.log10(max_pixel_value / np.sqrt(mse))
    return psnr
 
 
+noise_image=addNoise(image)
+
+psnr_val=PSNR(image,noise_image)
+plt.subplot(2,2,1)
+plt.imshow(image,cmap='gray')
+plt.title('original image')
+plt.subplot(2,2,2)
+plt.imshow(noise_image,cmap='gray')
+
+plt.title(f'psnr : {psnr_val:.2f}db')
 harmonic_image,geometric_image=harmonic_geometric_mean(noise_image,height,width)
 har=PSNR(image,harmonic_image)
 med_original=PSNR(image,geometric_image)

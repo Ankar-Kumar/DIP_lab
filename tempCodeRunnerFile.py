@@ -1,1 +1,1 @@
-.astype(np.uint)
+shape

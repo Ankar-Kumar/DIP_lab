@@ -3,19 +3,18 @@ import cv2
 import matplotlib.pyplot as plt
 image= cv2.imread('imgg/cameraman.jpg', 0)
 final_img=cv2.resize(image,(512,512))
-import math
+
 height,width=final_img.shape
 
 gama=0.6
  
 c=255/(np.log(1+255))
 
-tmp_img=np.zeros_like(final_img)
-power_img=np.zeros_like(final_img)
-inv_log=np.zeros_like(final_img)
 
 inv_log=np.exp(final_img / c) -1
 power_img=(final_img**gama)
+
+
 plt.subplot(1,3,1)
 plt.imshow(final_img,cmap='gray')
 plt.title('original image')

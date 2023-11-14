@@ -1,17 +1,44 @@
-a=[1,2,4,3]
-print(a[1:6])
+import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 
-# Create a 1D array
-signal = np.array([1, 2, 3, 4, 5, 6,7,8])
+st_elemen = np.ones((3, 3), np.uint8) * 255
+size = st_elemen[0].size
 
-# Compute the FFT
-fft_result = np.fft.fft(signal)
+image = cv2.imread('imgg/ahnaf.tif', 0)
+image = cv2.resize(image, (512, 512))
 
-# Shift the zero frequency component to the center
-shifted_result = np.fft.fftshift(fft_result)
+height, width = image.shape
 
-print("Original FFT Result:")
-print(abs(fft_result))
-print("\nShifted FFT Result:")
-print(abs(shifted_result))
+
+def erosion_op(image, st_elemen):
+    pad_h = size // 2
+    padded_image = np.pad(image, pad_h, mode='constant')
+
+    erosion_img = np.zeros_like(image)
+    for i in range(height):
+        for j in range(width):
+            tmp_window = padded_image[i:i + size, j:j + size]
+            if np.array_equal(np.bitwise_and(tmp_window, st_elemen), st_elemen):
+                erosion_img[i, j] = 255
+           
+
+    return erosion_img
+
+erosion_img =image -  erosion_op(image, st_elemen)
+
+
+plt.subplot(221)
+plt.imshow(image, cmap='gray')
+plt.title('original image')
+plt.axis('off')
+plt.subplot(222)
+plt.imshow(cv2.dilate(image,st_elemen),cmap='gray')
+plt.axis('off')
+plt.subplot(223)
+plt.imshow(erosion_img, cmap='gray')
+plt.title('erosion image')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()

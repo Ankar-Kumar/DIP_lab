@@ -8,7 +8,7 @@ image = cv2.resize(img, (512, 512))
 
 height, width = image.shape
 
-mean = 0
+mean = 10
 stddev = 25
 
 noise = np.random.normal(mean, stddev, image.shape).astype(np.uint8)
@@ -35,20 +35,20 @@ def gaussian(F):
     Gaussian_constant=Gaussian*F
     filter_image=np.abs(np.fft.ifft2(Gaussian_constant))
     # filtered_image = cv2.normalize(filter_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-    filtered_image=filter_image/255
-    return filtered_image
+    # filtered_image=filter_image/255
+    return filter_image
 
 
 def butterworth(F):
-    M, N = F.shape
+    M, N = F.shape 
     H = np.zeros((M, N))
     for u in range(M):
         for v in range(N):
             D = np.sqrt((u - M/2)**2 + (v - N/2)**2)
             H[u, v] = 1 / (1 + (D / D0)**(2 * n))
-    G = F * H
-    filtered_image = np.abs(np.fft.ifft2(G))
-    filtered_image = cv2.normalize(filtered_image, None, 0, 255, cv2.NORM_MINMAX)
+    filterd_image= F * H
+    filtered_image = np.abs(np.fft.ifft2(filterd_image))
+    # filtered_image = cv2.normalize(filtered_image, None, 0, 255, cv2.NORM_MINMAX)
     return filtered_image
 
 

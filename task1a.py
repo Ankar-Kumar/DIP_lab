@@ -15,7 +15,7 @@ def upsampling(image,scale):
 
 def downsample(image, scale):
     h, w = image.shape
-    h,w= h // scale, w // scale
+    h,w= h // scale, w // scale  #new height and new width
     resized_image = np.zeros((h,w))
     
     for i in range(h):

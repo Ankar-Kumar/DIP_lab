@@ -1,31 +1,41 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-st_element=np.ones((3,3))
+st_element=np.ones((3,3),np.uint8)*255
 
-image= cv2.imread('imgg/fingerprint.png', cv2.IMREAD_GRAYSCALE)
+image= cv2.imread('imgg/fingerprint.png', 0)
 image=cv2.resize(image,(512,512))
 height,width=image.shape
+size=st_element[0].size
+# print(size)
 
+def erosion_op(image, st_elemen):
+    pad_h = size // 2
+    padded_image = np.pad(image, pad_h, mode='constant')
 
-def erosion_op(image,st_element):
+    erosion_img = np.zeros_like(image)
+    for i in range(height):
+        for j in range(width):
+            tmp_window = padded_image[i:i + size, j:j + size]
+            if np.array_equal(np.bitwise_and(tmp_window, st_elemen), st_elemen):
+                erosion_img[i, j] = 255
+            else:
+                erosion_img[i, j] = 0
 
-    erosion_img=np.copy(image)
-    for i in range(1,height-1):
-        for j in range(1,width-1):
-            erosion_img[i,j]=np.min(image[i-1:i+2,j-1:j+2]*st_element)
     return erosion_img
-def dilation_op(image,st_element):
-    
-    dialation_img=np.copy(image)
-    for i in range(1,height-1):
-        for j in range(1,width-1):
-            dialation_img[i,j]=np.max(image[i-1:i+2,j-1:j+2]*st_element)
-    return dialation_img
 
 
-#  if np.all(image[i - 1:i + 2, j - 1:j + 2] >= st_element):
-#                 erosion_img[i, j] = 255
+def dilation_op(image, st_element):
+    pad_h = size // 2
+    padded_image = np.pad(image, pad_h, mode='constant')
+
+    dilation_img = np.zeros_like(image)
+    for i in range(height):
+        for j in range(width):
+            tmp_window = padded_image[i:i + size, j:j + size]
+            if np.any(np.bitwise_and(tmp_window, st_element)):
+                dilation_img[i, j] = 255          
+    return dilation_img
 
 opening_img=dilation_op(erosion_op(image,st_element),st_element)
 closing_img=erosion_op(dilation_op(image,st_element),st_element)
