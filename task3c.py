@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-image= cv2.imread('imgg/cat.jpg', 0)
+image= cv2.imread('imgg/Characters Test Pattern 688x688.tif', 0)
 image=cv2.resize(image,(512,512))
 height,width=image.shape
 def addNoise(image):

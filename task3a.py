@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-image= cv2.imread('imgg/cameraman.jpg', 0)
+image= cv2.imread('imgg/Characters Test Pattern 688x688.tif', 0)
 image=cv2.resize(image,(512,512))
 height,width=image.shape
 origin=np.copy(image)
@@ -35,10 +35,12 @@ def padding_add(n,noise_image):
 
 
 def Average(noise_image,height,width):    
-    spatial_image=np.zeros((height,width))  
     n=3
-    pad_image,mask=padding_add(n,noise_image)
-    # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
+    mask = np.ones((n,n))/ (n*n)
+    spatial_image=np.zeros((height,width))  
+    # pad_image,mask=padding_add(n,noise_image)
+    pad_height=n//2
+    pad_image=np.pad(noise_image,pad_height,mode='constant')
 
     for h in range(height):
         for w in range(width):
@@ -50,10 +52,11 @@ def Average(noise_image,height,width):
 
 def Median(noise_image,height,width):
     n=3
-    spatial_image=np.zeros_like(noise_image)
-    pad_image,mask=padding_add(n,noise_image)
-    # pad_image=np.pad(noise_image,((pad_height,pad_height),(pad_width,pad_width)),mode='constant')
-
+    mask = np.ones((n,n))
+    spatial_image=np.zeros((height,width))  
+    # pad_image,mask=padding_add(n,noise_image)
+    pad_height=n//2
+    pad_image=np.pad(noise_image,pad_height,mode='constant')
     for h in range(height):
         for w in range(width):
             tmp_window=pad_image[h:h+n,w:w+n]

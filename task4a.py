@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the image
-img = cv2.imread('imgg/ideal.png', 0)
+img = cv2.imread('imgg/Characters Test Pattern 688x688.tif', 0)
 image = cv2.resize(img, (512, 512))
 
 height, width = image.shape

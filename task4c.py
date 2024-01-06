@@ -16,7 +16,7 @@ fimg = np.fft.fftshift(np.fft.fft2(img))
 # fimg1 = np.fft.fftshift(np.fft.fft2(ori_img))
 
 (row, column) = img.shape
-ghf = np.zeros((row,column), dtype = np.float32)
+ghf = np.zeros((row,column))
 for u in range(row):
         for v in range(column):            
             D=np.sqrt( (u - row/2)**2 + (v - column/2)**2)

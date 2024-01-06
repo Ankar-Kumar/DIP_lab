@@ -5,7 +5,7 @@ import cv2
 st_elemen = np.ones((3, 3), np.uint8) * 255
 size = st_elemen[0].size
 
-image = cv2.imread('imgg/fingerprint.png', 0)
+image = cv2.imread('imgg/noisy.tif', 0)
 image = cv2.resize(image, (512, 512))
 
 height, width = image.shape
@@ -39,16 +39,16 @@ def dilation_op(image, st_element):
     return dilation_img
 
 
-dilation_img = dilation_op(image, st_elemen)
-erosion_img = erosion_op(image, st_elemen)
 
+erosion_img = erosion_op(image, st_elemen)
+dilation_img = dilation_op(erosion_img , st_elemen)
 plt.subplot(221)
 plt.imshow(image, cmap='gray')
 plt.title('original image')
 plt.axis('off')
-plt.subplot(222)
-plt.imshow(cv2.dilate(image,st_elemen),cmap='gray')
-plt.axis('off')
+# plt.subplot(222)
+# plt.imshow(cv2.dilate(image,st_elemen),cmap='gray')
+# plt.axis('off')
 plt.subplot(223)
 plt.imshow(erosion_img, cmap='gray')
 plt.title('erosion image')

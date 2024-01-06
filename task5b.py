@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 st_element=np.ones((3,3),np.uint8)*255
 
-image= cv2.imread('imgg/fingerprint.png', 0)
+image= cv2.imread('imgg/noisy.tif', 0)
 image=cv2.resize(image,(512,512))
 height,width=image.shape
 size=st_element[0].size
